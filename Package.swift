@@ -13,8 +13,8 @@ let package = Package(
     ],
 	dependencies: [
 		.package(url: "https://github.com/devxoul/Then", branch: "master"),
-		.package(url: "https://github.com/ReactiveX/RxSwift", branch: "main"),
-		.package(url: "https://github.com/SnapKit/SnapKit", branch: "develop"),
+		.package(url: "https://github.com/ReactiveX/RxSwift", exact: "6.9.1"),
+		.package(url: "https://github.com/SnapKit/SnapKit", exact: "5.7.1"),
 		.package(url: "https://github.com/nicklockwood/SwiftFormat", branch: "main"),
 	],
     targets: [
