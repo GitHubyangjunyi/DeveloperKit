@@ -6,22 +6,44 @@ import PackageDescription
 let package = Package(
     name: "DeveloperKit",
     products: [
-        // Products define the executables and libraries a package produces, making them visible to other packages.
-        .library(
-            name: "DeveloperKit",
-            targets: ["DeveloperKit"]
-        ),
+        .library(name: "DeveloperKit", targets: ["DeveloperKit"]),// 只做聚合不放具体实现
+		.library(name: "DeveloperUI", targets: ["DeveloperUI"]),
+		.library(name: "DeveloperRx", targets: ["DeveloperRx"]),
+		.library(name: "DeveloperFoundation", targets: ["DeveloperFoundation"]),
     ],
+	dependencies: [
+		.package(url: "https://github.com/devxoul/Then", branch: "master"),
+		.package(url: "https://github.com/ReactiveX/RxSwift", branch: "main"),
+		.package(url: "https://github.com/SnapKit/SnapKit", branch: "develop"),
+		.package(url: "https://github.com/nicklockwood/SwiftFormat", branch: "main"),
+	],
     targets: [
-        // Targets are the basic building blocks of a package, defining a module or a test suite.
-        // Targets can depend on other targets in this package and products from dependencies.
-        .target(
-            name: "DeveloperKit"
-        ),
-        .testTarget(
-            name: "DeveloperKitTests",
-            dependencies: ["DeveloperKit"]
-        ),
+        .target(name: "DeveloperKit",
+				dependencies: [
+					"Then",
+					"SnapKit",
+					.target(name: "DeveloperUI"),
+					.target(name: "DeveloperRx"),
+					.target(name: "DeveloperFoundation"),
+			   ]),
+		.target(name: "DeveloperUI",
+				dependencies: [
+					"Then",
+					"SnapKit",
+					.target(name: "DeveloperRx"),
+					.target(name: "DeveloperFoundation"),
+					.product(name: "RxSwift", package: "RxSwift"),
+				]),
+		.target(name: "DeveloperRx",
+				dependencies: [
+					.target(name: "DeveloperFoundation"),
+					.product(name: "RxSwift", package: "RxSwift"),
+				]
+			   ),
+		.target(name: "DeveloperFoundation"),
+		// MARK: - 下面都是测试Target
+        .testTarget(name: "DeveloperKitTests", dependencies: ["DeveloperKit"]),
+		.testTarget(name: "DeveloperFoundationTests", dependencies: ["DeveloperFoundation"]),
     ],
     swiftLanguageModes: [.v6]
 )
